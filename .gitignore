@@ -133,3 +133,4 @@ dmypy.json
 *.iml
 out
 gen
+/com/IJCAI_serach/rank2/data/*
