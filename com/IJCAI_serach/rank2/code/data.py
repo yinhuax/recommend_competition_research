@@ -150,9 +150,9 @@ if os.path.exists('../data/origion_concat.csv'):
     # data=pd.read_csv('../data/origion_concat.csv')
     print('data prepared ~')
 else:
-    train = pd.read_csv('../data/round2_train.txt', sep=' ')
-    testa = pd.read_csv('../data/round2_ijcai_18_test_a_20180425.txt', sep=' ')
-    testb = pd.read_csv('../data/round2_ijcai_18_test_b_20180510.txt', sep=' ')
+    train = pd.read_csv('../data/round2_train.txt', sep=' ', nrows=10000)
+    testa = pd.read_csv('../data/round2_ijcai_18_test_a_20180425.txt', sep=' ', nrows=10000)
+    testb = pd.read_csv('../data/round2_ijcai_18_test_b_20180510.txt', sep=' ', nrows=10000)
     testa['is_trade'] = -1
     testb['is_trade'] = -2
     # train=fix_instance_id(train)
