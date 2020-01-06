@@ -58,18 +58,23 @@ def run_query_feature(i):
         col = ['user_id', 'predict_category_property', 'context_timestamp', 'day', 'query1', 'query', 'item_id',
                'shop_id', 'item_brand_id', 'item_city_id', 'context_page_id', 'item_category_list']
         tmp = data[data['user_id'] == row['user_id']][['instance_id'] + col]
+        # 之前查询的类目属性列表数量
         before_query_cnt = len(tmp[(tmp['predict_category_property'] == row['predict_category_property']) & (
                 tmp['context_timestamp'] < row['context_timestamp']) & (tmp['day'] <= row['day'])])
+        # 之前查询的类目属性列表的第一个类目数量predict_category_property
         before_query_1_cnt = len(tmp[(tmp['query1'] == row['query1']) & (
                 tmp['context_timestamp'] < row['context_timestamp']) & (tmp['day'] <= row['day'])])
+        # 之前查询的所有类目列表与当前相同的数量
         before_query_all_cnt = len(tmp[(tmp['query'] == row['query']) & (
                 tmp['context_timestamp'] < row['context_timestamp']) & (tmp['day'] <= row['day'])])
+        # 之后的查询
         after_query_cnt = len(tmp[(tmp['predict_category_property'] == row['predict_category_property']) & (
                 tmp['context_timestamp'] > row['context_timestamp']) & (tmp['day'] <= row['day'])])
         after_query_1_cnt = len(tmp[(tmp['query1'] == row['query1']) & (
                 tmp['context_timestamp'] > row['context_timestamp']) & (tmp['day'] <= row['day'])])
         after_query_all_cnt = len(tmp[(tmp['query'] == row['query']) & (
                 tmp['context_timestamp'] > row['context_timestamp']) & (tmp['day'] <= row['day'])])
+        # 之前查询的商品id数量与现在相同的cnt
         before_query_item_cnt = len(tmp[(tmp['item_id'] == row['item_id']) & (
                 tmp['predict_category_property'] == row['predict_category_property']) & (
                                                 tmp['context_timestamp'] < row['context_timestamp']) & (
@@ -78,6 +83,7 @@ def run_query_feature(i):
                 tmp['context_timestamp'] < row['context_timestamp']) & (tmp['day'] <= row['day'])])
         before_query_all_item_cnt = len(tmp[(tmp['item_id'] == row['item_id']) & (tmp['query'] == row['query']) & (
                 tmp['context_timestamp'] < row['context_timestamp']) & (tmp['day'] <= row['day'])])
+        # 当前数据之后查询的商品id数目与现在相同的cnt
         after_query_item_cnt = len(tmp[(tmp['item_id'] == row['item_id']) & (
                 tmp['predict_category_property'] == row['predict_category_property']) & (
                                                tmp['context_timestamp'] > row['context_timestamp']) & (
@@ -86,6 +92,7 @@ def run_query_feature(i):
                 tmp['context_timestamp'] > row['context_timestamp']) & (tmp['day'] <= row['day'])])
         after_query_all_item_cnt = len(tmp[(tmp['item_id'] == row['item_id']) & (tmp['query'] == row['query']) & (
                 tmp['context_timestamp'] > row['context_timestamp']) & (tmp['day'] <= row['day'])])
+        # 店铺属性
         before_query_shop_cnt = len(tmp[(tmp['shop_id'] == row['shop_id']) & (
                 tmp['predict_category_property'] == row['predict_category_property']) & (
                                                 tmp['context_timestamp'] < row['context_timestamp']) & (
@@ -102,6 +109,7 @@ def run_query_feature(i):
                 tmp['context_timestamp'] > row['context_timestamp']) & (tmp['day'] <= row['day'])])
         after_query_1_shop_cnt = len(tmp[(tmp['shop_id'] == row['shop_id']) & (tmp['query1'] == row['query1']) & (
                 tmp['context_timestamp'] > row['context_timestamp']) & (tmp['day'] <= row['day'])])
+        # 广告商品品牌
         before_query_brand_cnt = len(tmp[(tmp['item_brand_id'] == row['item_brand_id']) & (
                 tmp['predict_category_property'] == row['predict_category_property']) & (
                                                  tmp['context_timestamp'] < row['context_timestamp']) & (
@@ -122,6 +130,7 @@ def run_query_feature(i):
         after_query_1_brand_cnt = len(tmp[(tmp['item_brand_id'] == row['item_brand_id']) & (
                 tmp['query1'] == row['query1']) & (tmp['context_timestamp'] > row['context_timestamp']) & (
                                                   tmp['day'] <= row['day'])])
+        # 广告商品城市id
         before_query_city_cnt = len(tmp[(tmp['item_city_id'] == row['item_city_id']) & (
                 tmp['predict_category_property'] == row['predict_category_property']) & (
                                                 tmp['context_timestamp'] < row['context_timestamp']) & (
@@ -142,6 +151,7 @@ def run_query_feature(i):
         after_query_1_city_cnt = len(tmp[(tmp['item_city_id'] == row['item_city_id']) & (
                 tmp['query1'] == row['query1']) & (tmp['context_timestamp'] > row['context_timestamp']) & (
                                                  tmp['day'] <= row['day'])])
+        # 广告商品展示的页面编号
         before_query_page_cnt = len(tmp[(tmp['context_page_id'] == row['context_page_id']) & (
                 tmp['predict_category_property'] == row['predict_category_property']) & (
                                                 tmp['context_timestamp'] < row['context_timestamp']) & (
@@ -162,6 +172,7 @@ def run_query_feature(i):
         after_query_all_page_cnt = len(tmp[(tmp['context_page_id'] == row['context_page_id']) & (
                 tmp['query'] == row['query']) & (tmp['context_timestamp'] > row['context_timestamp']) & (
                                                    tmp['day'] <= row['day'])])
+        # 广告商品的类目列表信息
         before_query_cate_cnt = len(tmp[(tmp['item_category_list'] == row['item_category_list']) & (
                 tmp['predict_category_property'] == row['predict_category_property']) & (
                                                 tmp['context_timestamp'] < row['context_timestamp']) & (
@@ -182,6 +193,7 @@ def run_query_feature(i):
         after_query_all_cate_cnt = len(tmp[(tmp['item_category_list'] == row['item_category_list']) & (
                 tmp['query'] == row['query']) & (tmp['context_timestamp'] > row['context_timestamp']) & (
                                                    tmp['day'] <= row['day'])])
+        # 与当前查询不同的信息
         before_diff_query_cnt = len(set(tmp[(tmp['context_timestamp'] < row['context_timestamp']) & (
                 tmp['predict_category_property'] != row['predict_category_property'])]))
         before_diff_query_all_cnt = len(
@@ -194,6 +206,7 @@ def run_query_feature(i):
             set(tmp[(tmp['context_timestamp'] > row['context_timestamp']) & (tmp['query'] != row['query'])]))
         after_diff_query_1_cnt = len(
             set(tmp[(tmp['context_timestamp'] > row['context_timestamp']) & (tmp['query1'] != row['query1'])]))
+        # 查询了当前查询词类目属性列表的最早查询时间
         query_min_time = np.min(
             tmp[(tmp['predict_category_property'] == row['predict_category_property'])]['context_timestamp'])
         query_all_min_time = np.min(tmp[(tmp['query'] == row['query'])]['context_timestamp'])
@@ -335,6 +348,7 @@ def run_leak_feature(i):
         feature['instance_id'] = row['instance_id']
         if index % 1000 == 0:
             print(index)
+        # 当天查询的数据
         tmp = data[(data['user_id'] == row['user_id']) & (data['day'] == row['day'])]
         tmp = tmp.sort_values(by='context_timestamp').reset_index(drop=True)
         diffs = []
@@ -343,14 +357,19 @@ def run_leak_feature(i):
         else:
             for ind in range(len(tmp) - 1):
                 diffs.append(sec_diff(tmp.loc[ind + 1, 'context_timestamp'], tmp.loc[ind, 'context_timestamp']))
+        # 查询间隔，毫秒数
         max_diff = np.max(diffs)
         min_diff = np.min(diffs)
         avg_diff = np.mean(diffs)
         mid_diff = np.median(diffs)
+        # 与第一次点击之间的间隔
         diff_first_click = sec_diff(row['context_timestamp'], tmp.loc[0, 'context_timestamp'])
+        # 与最后一次点击之间的间隔
         diff_last_click = sec_diff(row['context_timestamp'], tmp.loc[len(tmp) - 1, 'context_timestamp'])
+        # 前一次点击时间与当前的间隔
         previous_diff = sec_diff(row['context_timestamp'], np.max(
             tmp[(tmp['context_timestamp'] < row['context_timestamp'])]['context_timestamp']))
+        # 下次点击与当前的间隔
         next_diff = sec_diff(np.min(tmp[(tmp['context_timestamp'] > row['context_timestamp'])]['context_timestamp']),
                              row['context_timestamp'])
         query_cnt = len(set(tmp['predict_category_property']))
@@ -360,6 +379,7 @@ def run_leak_feature(i):
         shop_cnt = len(set(tmp['shop_id']))
         brand_cnt = len(set(tmp['item_brand_id']))
         city_cnt = len(set(tmp['item_city_id']))
+        # 查询率
         before_query_rate = len(set(tmp[(tmp['context_timestamp'] <= row['context_timestamp']) & (
                 tmp['predict_category_property'] == row['predict_category_property'])][
                                         'predict_category_property'])) / query_cnt
@@ -387,6 +407,7 @@ def run_leak_feature(i):
             tmp[(tmp['context_timestamp'] <= row['context_timestamp']) & (tmp['item_city_id'] == row['item_city_id'])][
                 'item_city_id'])) / city_cnt
         after_city_rate = 1 - before_city_rate
+        # 搜索这个商品,店铺，品牌，城市，用了几个query
         before_item_query_cnt = len(set(
             tmp[(tmp['context_timestamp'] <= row['context_timestamp']) & (tmp['item_id'] == row['item_id'])][
                 'predict_category_property']))
@@ -531,6 +552,7 @@ def leak_feature():
 
 
 def run_compare_feature(i):
+    # 当天竞争情况
     data = pd.read_csv('../data/user_data/query_' + str(i) + '.csv')
     features = []
     for index, row in data.iterrows():
@@ -538,6 +560,8 @@ def run_compare_feature(i):
         feature['instance_id'] = row['instance_id']
         if index % 1000 == 0:
             print(index)
+        # 当天该用户查询了多少价格更低的商品，销量更高的商品，评价数更多的店铺，
+        #     好评率高的店铺，星级高的店铺，服务态度高的店铺，物流好的店铺，描述平分高的店铺
         tmp = data[(data['user_id'] == row['user_id']) & (data['day'] == row['day'])]
         # tmp=tmp.sort_values(by='context_timestamp').reset_index(drop=True)
         before_low_price_cnt = len(set(tmp[(tmp['context_timestamp'] < row['context_timestamp']) & (
